@@ -44,10 +44,11 @@ object Skyline {
     // Create spark context
     val sc = new SparkContext(sparkConf) // create spark context
 
-
-    val inputFile = "/home/georgematlis/IdeaProjects/Scalable Processing of Dominance-Based Queries/Distribution Datasets/Correlated_Data_Testing.txt"
+    //val inputFile = "/home/georgematlis/IdeaProjects/Scalable Processing of Dominance-Based Queries/Distribution Datasets/Correlated_Data_Testing.txt"
+    val inputFile = "Distribution Datasets/Correlated_Data_Testing.txt"
     //val inputFile = "hdfs://localhost:9000/user/ozzy/data/leonardo/leonardo.txt"
-    val outputDir = "/home/georgematlis/IdeaProjects/Scalable Processing of Dominance-Based Queries/Skyline_Output"
+    //val outputDir = "/home/georgematlis/IdeaProjects/Scalable Processing of Dominance-Based Queries/Skyline_Output"
+    val outputDir = "Skyline_Output"
 
     println("Reading from input file: " + inputFile)
 
