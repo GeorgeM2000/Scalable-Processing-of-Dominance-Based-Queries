@@ -1,3 +1,6 @@
 # Project exclude paths
 /project/target/
 /target/
+.bsp/sbt.json
+.idea/libraries/
+.idea/modules/
