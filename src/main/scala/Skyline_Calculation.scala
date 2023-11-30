@@ -27,7 +27,7 @@ object Skyline_Calculation {
 
     // Assuming each partition writes to a separate file
     val partitionId = TaskContext.getPartitionId()
-    val outputFilePath = new File(s"/home/georgematlis/IdeaProjects/Scalable Processing of Dominance-Based Queries/Output/partition_$partitionId.txt")
+    val outputFilePath = new File(s"/home/georgematlis/IdeaProjects/Scalable Processing of Dominance-Based Queries/Input_Partitions/partition_$partitionId.txt")
 
     // Open a new PrintWriter for writing Dominated_Points
     val writer = new PrintWriter(outputFilePath)
@@ -48,7 +48,7 @@ object Skyline_Calculation {
 
     // Assuming each partition wrote to a separate file
     val partitionId = TaskContext.getPartitionId()
-    val inputFilePath = new File(s"/home/georgematlis/IdeaProjects/Scalable Processing of Dominance-Based Queries/Output/partition_$partitionId.txt")
+    val inputFilePath = new File(s"/home/georgematlis/IdeaProjects/Scalable Processing of Dominance-Based Queries/Input_Partitions/partition_$partitionId.txt")
 
     // Read Dominated_Points from the file and add them to the ListBuffer
     val reader = new BufferedReader(new FileReader(inputFilePath))
@@ -76,9 +76,39 @@ object Skyline_Calculation {
     dominatedPoints.toList
   }
 
+  def computeLocalSkylineBaseline(x: Iterator[Point]): Iterator[Point] = {
+    var tempList = x.toList
+    var i = 0
+    var listLength = tempList.length
+
+    while (i < listLength - 1) {
+      var k = i + 1
+      while (k < listLength) {
+        if (dominates(tempList(i), tempList(k))) {
+          tempList(i).dominance_score += 1
+          tempList = tempList.take(k) ++ tempList.drop(k + 1)
+          k = k - 1
+          listLength = listLength - 1
+
+        }
+        else if (dominates(tempList(k), tempList(i))) {
+          tempList(k).dominance_score += tempList(i).dominance_score + 1
+          tempList = tempList.take(i) ++ tempList.drop(i + 1)
+          listLength = listLength - 1
+          i = i - 1
+          k = listLength
+        }
+        k = k + 1
+      }
+      i = i + 1
+    }
+    tempList.iterator
+  }
+
 
   // Compute the local skyline set S
   def computeLocalSkyline(Data: Iterator[Point]): Iterator[Point] = {
+
 
     val S = ListBuffer[Point]()
     val Dominated_Points = ListBuffer[Point]()
@@ -90,11 +120,15 @@ object Skyline_Calculation {
 
       val iteratorClone = Points.filter { p2 =>
         if (dominates(p1, p2)) {
-          Dominated_Points += p2
+          if(!Dominated_Points.contains(p2)) {
+            Dominated_Points += p2
+          }
           dominated = true
           false
         } else if (dominates(p2, p1)) {
-          Dominated_Points += p1
+          if (!Dominated_Points.contains(p1)) {
+            Dominated_Points += p1
+          }
           S -= p1
           true
         } else {
@@ -108,7 +142,7 @@ object Skyline_Calculation {
       }
     }
 
-    saveDominatedPointsToLocalFileSystem(Dominated_Points)
+    //saveDominatedPointsToLocalFileSystem(Dominated_Points)
 
     S.iterator
   }
@@ -127,11 +161,15 @@ object Skyline_Calculation {
 
       val iteratorClone = Points.filter { p2 =>
         if (dominates(p1, p2)) {
-          Dominated_Points += p2
+          if (!Dominated_Points.contains(p2)) {
+            Dominated_Points += p2
+          }
           dominated = true
           false
         } else if (dominates(p2, p1)) {
-          Dominated_Points += p1
+          if (!Dominated_Points.contains(p1)) {
+            Dominated_Points += p1
+          }
           S -= p1
           true
         } else {
@@ -145,7 +183,7 @@ object Skyline_Calculation {
       }
     }
 
-    for(s <- S.toList.distinct) {
+    for(s <- S.toList) {
       for(d <- Dominated_Points.toList) {
         if(dominates(s, d)) {
           s.dominance_score += 1
