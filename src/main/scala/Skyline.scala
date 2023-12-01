@@ -33,7 +33,7 @@ object Skyline {
     val sc = new SparkContext(sparkConf) // create spark context
 
 
-    val inputFile = "/home/georgematlis/IdeaProjects/Scalable Processing of Dominance-Based Queries/Distribution Datasets/Correlated_Data.txt"
+    val inputFile = "Distribution Datasets/Correlated_Data.txt"
 
     // Input file path in HDFS
     //val inputFile = "hdfs://localhost:9000/user/ozzy/data/leonardo/leonardo.txt"
@@ -95,4 +95,47 @@ object Skyline {
 
 
   }
+}
+
+object DominatingPoints {
+  def main(args: Array[String]): Unit = {
+
+    println("***********************************************************************************************")
+    println("***********************************************************************************************")
+
+    println("Skyline Computation")
+
+    Logger.getLogger("org.apache.spark.SparkContext").setLevel(Level.WARN)
+
+    // Create spark configuration
+    val sparkConf = new SparkConf()
+      //.setMaster("local[2]")
+      .setMaster("local")
+      .setAppName("Skyline")
+
+    // Create spark context
+    val sc = new SparkContext(sparkConf) // create spark context
+
+
+    val inputFile = "Distribution Datasets/Correlated_Data.txt"
+
+    // Input file path in HDFS
+    //val inputFile = "hdfs://localhost:9000/user/ozzy/data/leonardo/leonardo.txt"
+
+    // Output directory path to store the results
+    //val outputDir = "/home/georgematlis/IdeaProjects/Scalable Processing of Dominance-Based Queries/Output"
+
+
+    val txtFile = sc.textFile(inputFile)
+
+
+
+    sc.stop()
+
+    println("***********************************************************************************************")
+    println("***********************************************************************************************")
+
+
+  }
+
 }

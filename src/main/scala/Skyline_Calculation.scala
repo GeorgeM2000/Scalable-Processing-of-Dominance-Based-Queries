@@ -27,7 +27,7 @@ object Skyline_Calculation {
 
     // Assuming each partition writes to a separate file
     val partitionId = TaskContext.getPartitionId()
-    val outputFilePath = new File(s"/home/georgematlis/IdeaProjects/Scalable Processing of Dominance-Based Queries/Input_Partitions/partition_$partitionId.txt")
+    val outputFilePath = new File(s"Input/partition_$partitionId.txt")
 
     // Open a new PrintWriter for writing Dominated_Points
     val writer = new PrintWriter(outputFilePath)
@@ -48,7 +48,7 @@ object Skyline_Calculation {
 
     // Assuming each partition wrote to a separate file
     val partitionId = TaskContext.getPartitionId()
-    val inputFilePath = new File(s"/home/georgematlis/IdeaProjects/Scalable Processing of Dominance-Based Queries/Input_Partitions/partition_$partitionId.txt")
+    val inputFilePath = new File(s"Input/partition_$partitionId.txt")
 
     // Read Dominated_Points from the file and add them to the ListBuffer
     val reader = new BufferedReader(new FileReader(inputFilePath))
