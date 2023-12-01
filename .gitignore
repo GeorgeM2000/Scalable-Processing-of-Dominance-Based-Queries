@@ -6,3 +6,6 @@
 .idea/modules/
 .bsp/sbt.json
 .idea/misc.xml
+*.xml
+.bsp/sbt.json
+*.iml
