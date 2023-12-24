@@ -2,10 +2,6 @@ import org.apache.spark.{SparkConf, SparkContext, TaskContext}
 import org.apache.log4j._
 import org.apache.spark.storage.StorageLevel
 
-import java.io.{BufferedWriter, FileWriter}
-import scala.math._
-import scala.collection.mutable.ListBuffer
-
 
 case class Point(dimensionValues: Array[Double], var dominance_score: Int = 0, var distance_score: Double = 0.0, var localIndex: Int = -1) {
   override def toString: String = s"Point(${dimensionValues.mkString(",")}), Dominance Score: $dominance_score"
