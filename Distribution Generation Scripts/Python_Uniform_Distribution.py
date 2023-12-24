@@ -3,7 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def generate_uniform_distribution(num_points, num_dimensions):
-    return np.random.uniform(0, 1, size=(num_points, num_dimensions))
+    points = np.random.uniform(0, 1, size=(num_points, num_dimensions))
+    points -= np.min(points, axis=0)
+    return points
 
 def plot_2d_distribution(data):
     if data.shape[1] == 2:
@@ -21,7 +23,7 @@ def main():
         print("Number of dimensions must be between 2 and 10.")
         return
 
-    num_points = 1000  # Number of data points
+    num_points = 10000  # Number of data points
 
     data = generate_uniform_distribution(num_points, num_dimensions)
     dataframe = pd.DataFrame(data=data)

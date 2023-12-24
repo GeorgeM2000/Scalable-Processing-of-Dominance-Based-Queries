@@ -15,7 +15,9 @@ def generate_correlated_distribution(num_points, num_dimensions, covariance=0.95
         for j in range(num_dimensions):
             if i!=j:
                 covariance_matrix[i,j]=covariance
-    return np.random.multivariate_normal(mean=[0]*num_dimensions, cov=covariance_matrix, size=num_points)
+    points = np.random.multivariate_normal(mean=[0]*num_dimensions, cov=covariance_matrix, size=num_points)
+    points -= np.min(points, axis=0)
+    return points
 
 def plot_2d_distribution(data):
     if data.shape[1] == 2:
@@ -33,7 +35,7 @@ def main():
         print("Number of dimensions must be between 2 and 10.")
         return
 
-    num_points = 1000  # Number of data points
+    num_points = 10000  # Number of data points
 
     data = generate_correlated_distribution(num_points, num_dimensions)
     dataframe = pd.DataFrame(data=data)

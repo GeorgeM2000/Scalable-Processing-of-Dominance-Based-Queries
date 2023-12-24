@@ -186,3 +186,98 @@
     }.mapPartitions(Skyline_Calculation.computeLocalSkyline)
 
      */
+
+
+
+def hashMapping(dPoint: Array[Double]): Int = {
+    // Convert the d-dimensional point to a string for hashing
+    val pointStr = dPoint.mkString(",")
+
+    // Calculate the hash value
+    val originalHash = MurmurHash3.stringHash(pointStr)
+
+    originalHash.toInt
+  }
+
+def saveDominatedPointsToLocalFileSystem(dominatedPoints: ListBuffer[Point]): Unit = {
+
+    // Assuming each partition writes to a separate file
+    val partitionId = TaskContext.getPartitionId()
+    val outputFilePath = new File(s"/home/georgematlis/IdeaProjects/Scalable Processing of Dominance-Based Queries/Input_Partitions/partition_$partitionId.txt")
+
+    // Open a new PrintWriter for writing Dominated_Points
+    val writer = new PrintWriter(outputFilePath)
+
+    // Iterate over the ListBuffer and write each point to the file
+    dominatedPoints.foreach { point =>
+      // Convert point to a string representation as needed
+      writer.println(point.dimensionValues.mkString(","))
+    }
+
+    // Close the writer
+    writer.close()
+  }
+
+  def loadDominatedPointsFromLocalFileSystem(): List[Point] = {
+    // Create an empty ListBuffer to store Dominated_Points
+    val dominatedPoints = ListBuffer[Point]()
+
+    // Assuming each partition wrote to a separate file
+    val partitionId = TaskContext.getPartitionId()
+    val inputFilePath = new File(s"/home/georgematlis/IdeaProjects/Scalable Processing of Dominance-Based Queries/Input_Partitions/partition_$partitionId.txt")
+
+    // Read Dominated_Points from the file and add them to the ListBuffer
+    val reader = new BufferedReader(new FileReader(inputFilePath))
+    var line: String = null
+
+
+    while ( {
+      line = reader.readLine(); line != null
+    }) {
+      val point: Point = {
+        // Parse the line and split dimension values
+        val values = line.split(",").map(_.trim.toDouble)
+
+        // Create a Point object using the parsed dimension values
+        Point(dimensionValues = values)
+      }
+
+      dominatedPoints += point
+    }
+
+    // Close the reader
+    reader.close()
+
+    // Return the ListBuffer containing Dominated_Points
+    dominatedPoints.toList
+  }
+
+// Function to compute dominance scores locally on each worker
+  def computeLocalDominanceScores(iterator: Iterator[Point]): Iterator[Point] = {
+    val points = iterator.toArray
+
+    for {
+      p1 <- points
+      p2 <- points if p1 != p2
+    } {
+      if(dominates(p1, p2)) {
+        p1.dominance_score += 1
+      }
+    }
+
+    points.iterator
+  }
+
+// Assuming results is an RDD[Point]
+    val combinedResults = results
+      .map(point => (point, point.dominance_score)) // Convert Point to (Point, dominance_score) pair
+      .aggregateByKey(0)(_ + _, _ + _) // Aggregate dominance scores by key (Point)
+
+    // Extract the top dominating skyline points
+    val topDominatingGlobalSkylinePoints = combinedResults
+      .sortBy({ case (_, totalDominance) => totalDominance }, ascending = false)
+      .map({ case (point, _) => point })
+
+    //val topDominatingGlobalSkylinePoints = results.collect().distinct().sortBy(point => point.dominance_score, ascending = false)
+
+    topDominatingGlobalSkylinePoints.foreach(println)
