@@ -23,35 +23,6 @@ object Skyline {
 
     println("Skyline Computation")
 
-    /*
-
-    val start = System.nanoTime()
-    val D = Iterator(
-      Point(Array(1.0, 1.0)),
-      Point(Array(2.0, 2.0)),
-      Point(Array(3.0, 3.0)),
-      Point(Array(0.5, 2.0)),
-      Point(Array(4.0, 4.0)),
-      Point(Array(5.0, 5.0)),
-      Point(Array(6.0, 6.0)),
-      Point(Array(0.2, 0.9)),
-      Point(Array(8.0, 8.0)),
-      Point(Array(9.0, 9.0))
-      //Point(Array(0.1, 0.1))
-    )
-
-    val skylineSet = Skyline_Calculation.computeFastSkyline(D)
-
-    println((System.nanoTime() - start).asInstanceOf[Double] / 1000000000.0)
-    println("Skyline Set:")
-    skylineSet.foreach(println)
-
-     */
-
-
-
-
-
     Logger.getLogger("org.apache.spark.SparkContext").setLevel(Level.WARN)
 
     // Create spark configuration
@@ -81,11 +52,10 @@ object Skyline {
     val localSkylines = txtFile.map(line => line.split(","))
       .map(line => line.map(elem => elem.toDouble))
       .map(array => Point(array))
-      .mapPartitions(Skyline_Calculation.computeFastSkyline)
-
-
+      .mapPartitions(Skyline_Calculation.computeLocalSkylineBaseline)
 
     /*
+    // Local skyline computation using the euclidean distance as a scoring function to sort the d-dimensional points
     val localSkylines = txtFile.map(line => line.split(","))
       .map(line => line.map(elem => elem.toDouble))
       .map(array => Point(array, distance_score = euclideanDistance(array)))

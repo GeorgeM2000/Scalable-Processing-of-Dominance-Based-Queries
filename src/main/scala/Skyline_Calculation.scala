@@ -117,7 +117,7 @@ object Skyline_Calculation {
 
 
   // Compute the local skyline set S
-  def computeLocalSkyline(Data: Iterator[Point]): Iterator[Point] = {
+  def computeLocalSkylineAltBaseline(Data: Iterator[Point]): Iterator[Point] = {
 
 
     val S = ListBuffer[Point]()
