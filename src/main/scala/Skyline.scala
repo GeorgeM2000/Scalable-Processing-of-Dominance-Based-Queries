@@ -18,6 +18,9 @@ object Skyline {
 
   def main(args: Array[String]): Unit = {
 
+    val inputFile = args(0)
+    val executors = args(1)
+
     println("***********************************************************************************************")
     println("***********************************************************************************************")
 
@@ -30,11 +33,12 @@ object Skyline {
       //.setMaster("local[2]")
       .setMaster("local")
       .setAppName("Skyline")
+      .set("spark.executor.cores", executors)
 
     // Create spark context
     val sc = new SparkContext(sparkConf) // create spark context
 
-    val inputFile = "/home/georgematlis/IdeaProjects/Scalable Processing of Dominance-Based Queries/Distribution Datasets/Correlated_Data.txt"
+    //val inputFile = "/home/georgematlis/IdeaProjects/Scalable Processing of Dominance-Based Queries/Distribution Datasets/Correlated_Data.txt"
 
     // Input file path in HDFS
     //val inputFile = "hdfs://localhost:9000/user/ozzy/data/leonardo/leonardo.txt"
@@ -100,10 +104,15 @@ object Skyline {
       globalSkylineIteratorOnWorker.iterator
     }
 
+    val dur = (System.nanoTime().toDouble-start.toDouble)/1000000000
+
     results.foreach(println)
 
+    println(s"Workers: $executors")
+    println(s"Input File: $inputFile")
+    println(s"Time Elapsed: $dur seconds")
 
-    sc.stop()
+    sc.stop(0)
 
     println("***********************************************************************************************")
     println("***********************************************************************************************")
