@@ -24,14 +24,14 @@ object Skyline_Calculation {
 
   def storeLocalSkylineIndices(localSkylineIndices: Skyline_Indices): Unit = {
     val partitionId = TaskContext.getPartitionId()
-    val objectOutputStream = new ObjectOutputStream(new FileOutputStream(s"/home/georgematlis/IdeaProjects/Scalable Processing of Dominance-Based Queries/Input_Partitions/partition_$partitionId.ser"))
+    val objectOutputStream = new ObjectOutputStream(new FileOutputStream(s"Input_Partitions/partition_$partitionId.ser"))
     objectOutputStream.writeObject(localSkylineIndices)
     objectOutputStream.close()
   }
 
   def loadLocalSkylineIndices(): Skyline_Indices = {
     val partitionId = TaskContext.getPartitionId()
-    val objectInputStream = new ObjectInputStream(new FileInputStream(s"/home/georgematlis/IdeaProjects/Scalable Processing of Dominance-Based Queries/Input_Partitions/partition_$partitionId.ser"))
+    val objectInputStream = new ObjectInputStream(new FileInputStream(s"Input_Partitions/partition_$partitionId.ser"))
     val loadedObject = objectInputStream.readObject().asInstanceOf[Skyline_Indices]
     objectInputStream.close()
 
