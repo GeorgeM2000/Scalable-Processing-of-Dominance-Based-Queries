@@ -1,0 +1,17 @@
+100000:
+    Uniform:
+        2d
+        4d
+        6d
+    Normal:
+        2d
+        4d
+        6d
+    Correlated:
+        2d
+        4d
+        6d
+    Anticorrelated:
+        2d
+        4d
+        6d

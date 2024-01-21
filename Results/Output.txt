@@ -1,0 +1,49 @@
+Elapsed time for Distribution Datasets/100000/Uniform_Data.txt: 5.549376686 seconds
+Elapsed time for Distribution Datasets/100000/Uniform_Data_4D.txt: 6.346763349 seconds
+Elapsed time for Distribution Datasets/100000/Uniform_Data_6D.txt: 107.054281127 seconds
+Elapsed time for Distribution Datasets/100000/Normal_Data.txt: 0.816533921 seconds
+Elapsed time for Distribution Datasets/100000/Normal_Data_4D.txt: 10.349879737 seconds
+Elapsed time for Distribution Datasets/100000/Normal_Data_6D.txt: 133.617044953 seconds
+Elapsed time for Distribution Datasets/100000/Correlated_Data.txt: 0.082839238 seconds
+Elapsed time for Distribution Datasets/100000/Correlated_Data_4D.txt: 0.115706713 seconds
+Elapsed time for Distribution Datasets/100000/Correlated_Data_6D.txt: 0.142479956 seconds
+Elapsed time for Distribution Datasets/100000/Anticorrelated_Data.txt: 11.571893326 seconds
+Elapsed time for Distribution Datasets/100000/Anticorrelated_Data_4D.txt: 8.821402182 seconds
+Elapsed time for Distribution Datasets/100000/Anticorrelated_Data_6D.txt: 22.840101772 seconds
+========================================
+Elapsed time for Distribution Datasets/100000/Uniform_Data.txt: 2.079799232 seconds
+Elapsed time for Distribution Datasets/100000/Uniform_Data_4D.txt: 4.107754993 seconds
+Elapsed time for Distribution Datasets/100000/Uniform_Data_6D.txt: 75.803036558 seconds
+Elapsed time for Distribution Datasets/100000/Normal_Data.txt: 0.389588513 seconds
+Elapsed time for Distribution Datasets/100000/Normal_Data_4D.txt: 3.332570433 seconds
+Elapsed time for Distribution Datasets/100000/Normal_Data_6D.txt: 74.520033186 seconds
+Elapsed time for Distribution Datasets/100000/Correlated_Data.txt: 0.07788133 seconds
+Elapsed time for Distribution Datasets/100000/Correlated_Data_4D.txt: 0.088582574 seconds
+Elapsed time for Distribution Datasets/100000/Correlated_Data_6D.txt: 0.111869535 seconds
+Elapsed time for Distribution Datasets/100000/Anticorrelated_Data.txt: 3.747057428 seconds
+Elapsed time for Distribution Datasets/100000/Anticorrelated_Data_4D.txt: 3.273181924 seconds
+Elapsed time for Distribution Datasets/100000/Anticorrelated_Data_6D.txt: 9.938646618 seconds
+=========================================================
+Elapsed time for Distribution Datasets/100000/Uniform_Data.txt: 1.583382306 seconds
+Elapsed time for Distribution Datasets/100000/Uniform_Data_4D.txt: 3.781315097 seconds
+Elapsed time for Distribution Datasets/100000/Uniform_Data_6D.txt: 69.070409143 seconds
+Elapsed time for Distribution Datasets/100000/Normal_Data.txt: 0.469453562 seconds
+Elapsed time for Distribution Datasets/100000/Normal_Data_4D.txt: 1.990976578 seconds
+Elapsed time for Distribution Datasets/100000/Normal_Data_6D.txt: 73.045611051 seconds
+Elapsed time for Distribution Datasets/100000/Correlated_Data.txt: 0.072367833 seconds
+Elapsed time for Distribution Datasets/100000/Correlated_Data_4D.txt: 0.092937707 seconds
+Elapsed time for Distribution Datasets/100000/Correlated_Data_6D.txt: 0.126343031 seconds
+Elapsed time for Distribution Datasets/100000/Anticorrelated_Data.txt: 2.359244675 seconds
+Elapsed time for Distribution Datasets/100000/Anticorrelated_Data_4D.txt: 2.11750786 seconds
+Elapsed time for Distribution Datasets/100000/Anticorrelated_Data_6D.txt: 8.53217454 seconds
+===========================================
+
+
+
+
+
+======================================
+
+
+
+
