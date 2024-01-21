@@ -158,6 +158,9 @@ object Skyline_Calculation {
   }
 
 
+
+
+  /*
   // Compute the local skyline set S
   def computeGlobalSkyline(Data: Iterator[Point]): Iterator[Point] = {
 
@@ -203,5 +206,7 @@ object Skyline_Calculation {
 
     S.iterator
   }
+
+   */
 
 }
