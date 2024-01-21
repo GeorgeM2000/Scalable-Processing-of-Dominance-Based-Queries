@@ -87,6 +87,8 @@ class Top_K_Dominating_Points_Calculation (sc: SparkContext, points_set: org.apa
 
     }
 
+    point.grid_pos = pos
+
     (coords.toList,pos)
 
   }
@@ -134,7 +136,7 @@ object Top_K_Dominating_Points {
     val top_points = calc.calculate(dominant_points)
 
     val dur = (System.nanoTime().toDouble-start.toDouble)/1000000000
-    val result = top_points.collect()
+    val result = top_points.map(f=>f.toString).collect()
 
     println(s"Top Points: $result\n")
     println(s"Workers: $executors")

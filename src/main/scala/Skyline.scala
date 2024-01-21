@@ -3,7 +3,7 @@ import org.apache.log4j._
 import org.apache.spark.storage.StorageLevel
 
 
-case class Point(dimensionValues: Array[Double], var dominance_score: Int = 0, var distance_score: Double = 0.0, var localIndex: Int = -1) {
+case class Point(dimensionValues: Array[Double], var dominance_score: Int = 0, var distance_score: Double = 0.0, var localIndex: Int = -1, var grid_pos: Int = 0) {
   override def toString: String = s"Point(${dimensionValues.mkString(",")}), Dominance Score: $dominance_score"
 }
 
