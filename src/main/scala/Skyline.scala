@@ -12,6 +12,10 @@ import java.nio.file.{Files, Paths, StandardOpenOption}
 /*
 case class Point(dimensionValues: Array[Double], var dominance_score: Int = 0, var distance_score: Double = 0.0, var localIndex: Int = -1) {
   override def toString: String = s"Point(${dimensionValues.mkString(",")}), Dominance Score: $dominance_score"
+  def sum_dominance(p:Point): Point = {
+    this.dominance_score += p.dominance_score
+    this
+  }
 }
  */
 
