@@ -5,6 +5,8 @@ import scala.collection.mutable.ListBuffer
 import scala.util.hashing.MurmurHash3
 import scala.math._
 
+
+/*
 class Top_K_Dominating_Points_Calculation (sc: SparkContext, points_set: org.apache.spark.rdd.RDD[Point], val strategy: String = "Uniform Grid") {
   // points_set: set of points for which dominance scores are to be calculated
   // Strategy options are "Uniform Grid" and "Adaptive Grid"
@@ -148,3 +150,4 @@ object Top_K_Dominating_Points {
   }
 
 }
+ */

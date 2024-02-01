@@ -411,3 +411,247 @@ object Main {
     }
   }
 }
+
+=============================================================
+def dominatesM(p1: Point, p2: Point): Boolean = {
+    var isDominating = false
+    var isAtLeastEqual = false
+
+    for (i <- p1.dimensionValues.indices) {
+      if (p1.dimensionValues(i) < p2.dimensionValues(i)) {
+        isDominating = true
+      } else if (p1.dimensionValues(i) > p2.dimensionValues(i)) {
+        return false
+      }
+      else {
+        isAtLeastEqual = true
+      }
+    }
+
+    isDominating || isAtLeastEqual
+  }
+
+
+/*
+  // This is a faster version of the baseline skyline algorithm
+  def computeFastSkyline(Data: Iterator[Point]): Iterator[Point] = {
+    var arraybuffer = ArrayBuffer[Point]()
+    val array = Data.toArray
+    arraybuffer += array(0)
+    for (i<-1 until array.length)
+    {
+      var j=0
+      var breaked = false
+      breakable
+      {
+        while (j < arraybuffer.length) {
+          if (dominates(array(i), arraybuffer(j))) {
+            arraybuffer.remove(j)
+            j-=1
+          }
+          else if (dominates(arraybuffer(j), array(i))) {
+            breaked = true
+            break()
+          }
+          j += 1
+        }
+      }
+      if(!breaked)
+        arraybuffer+=array(i)
+    }
+    arraybuffer.iterator
+  }
+   */
+
+
+
+
+
+
+
+// Compute the local skyline set S
+  // This is an alternative version of the baseline skyline algorithm. It doesn't compute the dominance score
+  def computeLocalSkylineAltBaseline(Data: Iterator[Point]): Iterator[Point] = {
+    val S = ListBuffer[Point]()
+    //val Dominated_Points = ListBuffer[Point]()
+    var Points = Data
+
+    while (Points.hasNext) {
+      val p1 = Points.next()
+      var dominated = false
+
+      val iteratorClone = Points.filter { p2 =>
+        if (dominates(p1, p2)) {
+          /*
+          if(!Dominated_Points.contains(p2)) {
+            Dominated_Points += p2
+          }
+           */
+          dominated = true
+          false
+        } else if (dominates(p2, p1)) {
+          /*
+          if (!Dominated_Points.contains(p1)) {
+            Dominated_Points += p1
+          }
+           */
+          S -= p1
+          true
+        } else {
+          true
+        }
+      }
+
+      if (!dominated) {
+        S += p1
+        Points = iteratorClone
+      }
+    }
+
+    S.iterator
+  }
+
+
+  /*
+  // Compute the local skyline set S
+  // This is not the baseline skyline algorithm. It computes the dominance score for each skyline point
+  def computeGlobalSkyline(Data: Iterator[Point]): Iterator[Point] = {
+
+    val S = ListBuffer[Point]()
+    val Dominated_Points = ListBuffer[Point]()
+    var Points = Data
+
+    while (Points.hasNext) {
+      val p1 = Points.next()
+      var dominated = false
+
+      val iteratorClone = Points.filter { p2 =>
+        if (dominates(p1, p2)) {
+          if (!Dominated_Points.contains(p2)) {
+            Dominated_Points += p2
+          }
+          dominated = true
+          false
+        } else if (dominates(p2, p1)) {
+          if (!Dominated_Points.contains(p1)) {
+            Dominated_Points += p1
+          }
+          S -= p1
+          true
+        } else {
+          true
+        }
+      }
+
+      if (!dominated) {
+        S += p1
+        Points = iteratorClone
+      }
+    }
+
+    for(s <- S.toList) {
+      for(d <- Dominated_Points.toList) {
+        if(dominates(s, d)) {
+          s.dominance_score += 1
+        }
+      }
+    }
+
+    S.iterator
+  }
+   */
+
+def dominates(p1: Point, p2: Point): Boolean = {
+    p1.dimensionValues.zip(p2.dimensionValues).forall { case (x, y) => x <= y } && p1.dimensionValues.exists(_ < p2.dimensionValues.min)
+  }
+
+
+
+  ====================================================================
+//val start = System.nanoTime()
+
+    //val txtFile = sc.textFile(inputFile, minPartitions = numberOfPartitions)
+
+
+    /*
+    // Task 2
+    val dominanceScoreCalcForPoints:RDD[(Point, Int)] = txtFile.map(line => line.split(","))
+      .map(line => line.map(elem => elem.toDouble))
+      .map(array => Point(array))
+      .cartesian(dominanceScoreCalcForPoints)
+      .filter { case (point1, point2) =>
+      point1 != point2 && dominates(point1, point2)
+    }.map(x => (x._1, 1))
+      .reduceByKey(_+_)
+      .sortBy(_._2,ascending = false)
+
+     */
+
+    /*
+    val localSkylines = txtFile.map(line => line.split(","))
+      .map(line => line.map(elem => elem.toDouble))
+      .map(array => Point(array))
+      .mapPartitions(Skyline_Calculation.computeLocalSkylineBaseline)
+
+    //println((System.nanoTime() - start).asInstanceOf[Double] / 1000000000.0)
+
+    val globalSkylines = Skyline_Calculation.computeLocalSkylineBaseline(localSkylines.collect().iterator)
+
+    println((System.nanoTime() - start).asInstanceOf[Double] / 1000000000.0)
+
+     */
+
+    //globalSkylines.foreach(println)
+
+
+
+    /*
+    // Local skyline computation using the euclidean distance as a scoring function to sort the d-dimensional points
+    val localSkylines = txtFile.map(line => line.split(","))
+      .map(line => line.map(elem => elem.toDouble))
+      .map(array => Point(array, distance_score = euclideanDistance(array)))
+      .sortBy(point => point.distance_score)
+      .mapPartitions(Skyline_Calculation.computeFastSkyline)
+
+     */
+
+    //println((System.nanoTime() - start).asInstanceOf[Double] / 1000000000.0)
+
+
+    /*
+    val datasetPreprocessing = txtFile.map(line => line.split(","))
+      .map(line => line.map(elem => elem.toDouble))
+      .map(array => Point(array, distance_score = euclideanDistance(array)))
+      .sortBy(point => point.distance_score)
+      .persist(StorageLevel.MEMORY_AND_DISK)
+
+    val globalSkylines = Skyline_Calculation.computeGlobalSkyline(datasetPreprocessing
+      .mapPartitions(Skyline_Calculation.computeLocalSkylineBaseline).collect().iterator)
+
+
+    // Broadcast the Global Skyline Set to workers
+    val globalSkylinesBroadcast = sc.broadcast(globalSkylines.toList)
+
+    val results = datasetPreprocessing.mapPartitions {Data: Iterator[Point] =>
+      val points = Data.toList
+      val localSkylineIndices = Skyline_Calculation.loadLocalSkylineIndices()
+
+      // Capture the global skyline iterator in the closure
+      val globalSkylineIteratorOnWorker = globalSkylinesBroadcast.value
+
+      val localDominatedPoints = Skyline_Calculation.findLocalDominatedPoints(localSkylineIndices.localPartitionLength, localSkylineIndices.localSkylineIndices)
+
+      for (s <- globalSkylineIteratorOnWorker) {
+        for (i <- localDominatedPoints) {
+          if (Skyline_Calculation.dominates(s, points(i))) {
+            s.dominance_score += 1
+          }
+        }
+      }
+
+      globalSkylineIteratorOnWorker.iterator
+    }
+
+    results.foreach(println)
+
+     */
