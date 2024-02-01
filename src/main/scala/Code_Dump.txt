@@ -567,7 +567,8 @@ def dominates(p1: Point, p2: Point): Boolean = {
 
 
 
-  ====================================================================
+====================================================================
+
 //val start = System.nanoTime()
 
     //val txtFile = sc.textFile(inputFile, minPartitions = numberOfPartitions)

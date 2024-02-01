@@ -72,7 +72,7 @@ object Skyline {
 
     try{
       val fileNames = List(
-        "Distribution Datasets/Testing/Correlated_Data_Testing.txt"
+        //"Distribution Datasets/Testing/Correlated_Data_Testing.txt"
         //"Distribution Datasets/50000/Uniform_Data.txt",
         //"Distribution Datasets/50000/Uniform_Data_4D.txt",
         //"Distribution Datasets/50000/Uniform_Data_6D.txt",

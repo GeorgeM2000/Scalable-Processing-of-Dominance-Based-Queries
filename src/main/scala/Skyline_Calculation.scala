@@ -15,7 +15,6 @@ object Skyline_Calculation {
   def findLocalDominatedPoints(length: Int, excludedIndices: List[Int]): List[Int] = {
     (0 until length).filterNot(excludedIndices.contains).toList
   }
-
   // Check if p1 dominates p2
   def dominates(p1: Point, p2: Point): Boolean = {
     var lessThanOrEqual = true
