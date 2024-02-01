@@ -40,7 +40,7 @@ def main():
     data = generate_correlated_distribution(num_points, num_dimensions)
     dataframe = pd.DataFrame(data=data)
 
-    file = 'Correlated_Data.txt'
+    file = f'Correlated_Data_{num_dimensions}D.txt'
 
     # Save DataFrame to a text file, separating points by commas
     dataframe.to_csv(file, sep=',', index=False, header=False)

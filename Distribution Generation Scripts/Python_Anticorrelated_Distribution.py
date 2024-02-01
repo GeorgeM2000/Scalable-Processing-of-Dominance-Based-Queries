@@ -41,7 +41,7 @@ def main():
     data = generate_anticorrelated_distribution(num_points, num_dimensions)
     dataframe = pd.DataFrame(data=data)
 
-    file = 'Anticorrelated_Data.txt'
+    file = f'Anticorrelated_Data_{num_dimensions}D.txt'
 
     # Save DataFrame to a text file, separating points by commas
     dataframe.to_csv(file, sep=',', index=False, header=False)
