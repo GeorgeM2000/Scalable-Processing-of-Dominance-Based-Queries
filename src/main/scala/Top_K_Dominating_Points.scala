@@ -216,14 +216,16 @@ class Top_K_Dominating_Points_Calculation (points_set: org.apache.spark.rdd.RDD[
 
   }
 
-  def hash_coords(p:Point): Double = {
+  def hash_coords(p:Point): Double = { // simple hashing method based on coordinates; assumes each point is uniquely positioned
     var sum = 0d
     for(i <- p.dimensionValues){
       sum += i
     }
-    sum*pow(p.dimensionValues(0),2)
+    sum*pow(p.dimensionValues(0)+1,2)
   }
   def calculate(k:Int,candidates:org.apache.spark.rdd.RDD[Point]): org.apache.spark.rdd.RDD[Point] = {
+
+    val start = System.nanoTime()
 
     val (grid,len) = make_grid() // construct the grid
 
@@ -264,6 +266,9 @@ class Top_K_Dominating_Points_Calculation (points_set: org.apache.spark.rdd.RDD[
 
     val to_check = located_points.filter(f => tier_cells.contains(f.grid_pos)) // dominated points we will have to perform dominance calculations for - the rest are found easily
 
+    val dur_prep = (System.nanoTime().toDouble - start.toDouble) / 1000000000
+    println(s"Time to locate dominant candidates: $dur_prep seconds")
+
     val pairs = chosen_candidates.cartesian(to_check) // dominant candidates and dominated points are zipped to tuples
 
     val split_counts = pairs.map(t => dominance_count(t._1, t._2)).map(point=>(hash_coords(point) -> point)).reduceByKey((a,b)=>a.sum_dominance(b)).map(k=>k._2)
@@ -280,7 +285,6 @@ object Top_K_Dominating_Points {
   def main(args: Array[String]): Unit = {
 
     // File location and number of top dominant points to return are passed as args to the main function
-    //val inputFile = args(0)
     val dominant_points = args(1).toInt
     val executors = args(2)
 
@@ -291,7 +295,7 @@ object Top_K_Dominating_Points {
     val sc = new SparkContext(sparkConf)
     sc.setLogLevel("WARN")
 
-    val fileNames = List(
+    /*val fileNames = List(
       "Distribution Datasets/Uniform_Data_2D.txt",
       "Distribution Datasets/Uniform_Data_2D.txt",
       "Distribution Datasets/Uniform_Data_2D.txt",
@@ -327,7 +331,29 @@ object Top_K_Dominating_Points {
       println(s"\nThreads: $executors")
       println(s"Input File: $inputFile")
       println(s"Time Elapsed: $dur seconds")
-    }
+    }*/
+
+    val inputFile = args(0)
+    val start = System.nanoTime()
+
+    val txtFile = sc.textFile(inputFile)
+
+    val allPoints = txtFile.map(line => line.split(","))
+      .map(line => line.map(elem => elem.toDouble))
+      .map(array => Point(array))
+
+    val calc = new Top_K_Dominating_Points_Calculation(allPoints)
+
+    val top_points = calc.calculate(dominant_points, allPoints).map(f => f.toString).take(dominant_points)
+
+    val dur = (System.nanoTime().toDouble - start.toDouble) / 1000000000
+
+    val result = top_points.mkString(" | ")
+
+    println(s"\nResult: $result")
+    println(s"\nThreads: $executors")
+    println(s"Input File: $inputFile")
+    println(s"Time Elapsed: $dur seconds")
 
   }
 }
